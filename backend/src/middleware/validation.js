@@ -1,0 +1,148 @@
+const validateRegistrationData = (data) => {
+  const errors = [];
+  
+  const requiredFields = [
+    'scholarship_type', 'scholarship_category', 'nickname_th', 'nickname_en',
+    'academic_year', 'department_code', 'shirt_size', 'self_introduction', 'proud_achievement'
+  ];
+  
+  requiredFields.forEach(field => {
+    if (!data[field] || data[field].toString().trim() === '') {
+      errors.push(`${field} is required`);
+    }
+  });
+  
+  const validScholarshipTypes = ['เพชรพระจอมเกล้า', 'แสดเหลืองเรืองรุ่ง'];
+  const validCategories = ['ผู้นำ', 'นวัตกรรม', 'กีฬา', 'เรียนดี', 'ศิลป์วัฒนธรรม'];
+  const validShirtSizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+  
+  if (data.scholarship_type && !validScholarshipTypes.includes(data.scholarship_type)) {
+    errors.push('Invalid scholarship type');
+  }
+  
+  if (data.scholarship_category && !validCategories.includes(data.scholarship_category)) {
+    errors.push('Invalid scholarship category');
+  }
+  
+  if (data.shirt_size && !validShirtSizes.includes(data.shirt_size)) {
+    errors.push('Invalid shirt size');
+  }
+  
+  if (data.self_introduction && data.self_introduction.length > 100) {
+    errors.push('Self introduction must be 100 characters or less');
+  }
+  
+  if (data.proud_achievement && data.proud_achievement.length > 500) {
+    errors.push('Proud achievement must be 500 characters or less');
+  }
+  
+  if (data.instagram_handle && data.instagram_handle.length > 0 && !data.instagram_handle.startsWith('@')) {
+    errors.push('Instagram handle must start with @');
+  }
+  
+  if (data.mbti && !/^[A-Z]{4}$/.test(data.mbti)) {
+    errors.push('MBTI must be 4 uppercase letters');
+  }
+  
+  if (data.academic_year && (data.academic_year < 2560 || data.academic_year > 2580)) {
+    errors.push('Academic year must be between 2560-2580');
+  }
+  
+  if (data.department_code && data.department_code.length > 10) {
+    errors.push('Department code must be 10 characters or less');
+  }
+  
+  return errors;
+};
+
+const validateHints = (hints) => {
+  const errors = [];
+  
+  if (!Array.isArray(hints)) {
+    errors.push('Hints must be an array');
+    return errors;
+  }
+  
+  if (hints.length !== 10) {
+    errors.push('Must provide exactly 10 hints');
+    return errors;
+  }
+  
+  hints.forEach((hint, index) => {
+    if (!hint || typeof hint !== 'string' || hint.trim() === '') {
+      errors.push(`Hint ${index + 1} cannot be empty`);
+    } else if (hint.length > 200) {
+      errors.push(`Hint ${index + 1} must be 200 characters or less`);
+    }
+  });
+  
+  return errors;
+};
+
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validatePhone = (phone) => {
+  const phoneRegex = /^0[0-9]{9}$/;
+  return phoneRegex.test(phone);
+};
+
+const sanitizeInput = (input) => {
+  if (typeof input !== 'string') return input;
+  
+  return input
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<[^>]*>/g, '')
+    .trim();
+};
+
+const validateRegistration = (req, res, next) => {
+  try {
+    const sanitizedBody = {};
+    for (const [key, value] of Object.entries(req.body)) {
+      if (key === 'hints') {
+        sanitizedBody[key] = Array.isArray(value) 
+          ? value.map(hint => sanitizeInput(hint))
+          : value;
+      } else {
+        sanitizedBody[key] = sanitizeInput(value);
+      }
+    }
+    
+    req.body = sanitizedBody;
+    
+    const { hints, ...registrationData } = req.body;
+    
+    const registrationErrors = validateRegistrationData(registrationData);
+    const hintErrors = validateHints(hints);
+    
+    const allErrors = [...registrationErrors, ...hintErrors];
+    
+    if (allErrors.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: allErrors
+      });
+    }
+    
+    next();
+  } catch (error) {
+    console.error('Validation middleware error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Validation error occurred'
+    });
+  }
+};
+
+module.exports = {
+  validateRegistrationData,
+  validateHints,
+  validateEmail,
+  validatePhone,
+  sanitizeInput,
+  validateRegistration
+};
