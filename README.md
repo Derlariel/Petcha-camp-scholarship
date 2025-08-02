@@ -74,26 +74,6 @@ A full-stack web application for managing registration and activities of **Petch
 
 ---
 
-## 📁 Project Structure (suggested)
-root/
-├── backend/ # Node.js (Express)
-│ ├── routes/
-│ ├── controllers/
-│ ├── models/
-│ └── index.js
-├── frontend/ # React + TypeScript
-│ ├── components/
-│ ├── pages/
-│ ├── utils/
-│ └── App.tsx
-├── mysql/ # SQL schema & seed
-├── .env
-└── README.md
-
-
-
----
-
 ## 🛠️ Server Requirements
 
 | Spec           | Value               |
