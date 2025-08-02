@@ -22,7 +22,7 @@ A full-stack web application for managing registration and activities of **Petch
 | Frontend  | React + TypeScript       |
 | Backend   | Node.js (Express)        |
 | Database  | MySQL                    |
-| Hosting   | Ubuntu 18.04.3 LTS       |
+| Hosting   | Ubuntu 22.04             |
 | Domain    | `https://petchacamp.kmutt.ac.th` |
 | Auth      | KMUTT OAuth / Student DB *(optional)*
 
