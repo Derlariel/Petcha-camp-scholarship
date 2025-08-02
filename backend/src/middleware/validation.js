@@ -66,8 +66,8 @@ const validateRegistrationData = (data) => {
   }
   
   // Academic year validation
-  if (data.academic_year && (data.academic_year < 2560 || data.academic_year > 2580)) {
-    errors.push('Academic year must be between 2560-2580');
+  if (data.academic_year && (data.academic_year < 1 || data.academic_year > 5)) {
+    errors.push('Academic year must be between 1-5');
   }
   
   // Department code validation

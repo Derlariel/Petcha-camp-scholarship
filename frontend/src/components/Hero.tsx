@@ -73,7 +73,7 @@ const Hero: React.FC = () => {
           {/* Logo */}
           <motion.div
             variants={sectionVariants}
-            className="mb-8"
+            
           >
             <motion.div
               animate={{ scale: [1, 1.05, 1] }}

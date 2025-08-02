@@ -9,6 +9,7 @@ import HintsSection from './HintsSection';
 import AnimatedBackground from '../ui/AnimatedBackground';
 import AnimatedHeader from '../ui/AnimatedHeader';
 import AnimatedSuccessModal from '../ui/AnimatedSuccessModal';
+import ErrorModal from '../ui/ErrorModal';
 import SubmitButton from './SubmitButton';
 
 
@@ -21,10 +22,20 @@ export default function RegistrationForm() {
     prefersReducedMotion,
     handleInputChange,
     handleHintChange,
-    handleSubmit
+    handleSubmit,
+    isFormValid
   } = useRegistration();
 
+  const [showErrorModal, setShowErrorModal] = React.useState(false);
 
+  // ฟังก์ชัน submit ใหม่
+  const handleFormSubmit = async () => {
+    if (!isFormValid()) {
+      setShowErrorModal(true);
+      return;
+    }
+    await handleSubmit();
+  };
 
   if (showSuccess) {
     return <AnimatedSuccessModal prefersReducedMotion={prefersReducedMotion} />;
@@ -36,14 +47,14 @@ export default function RegistrationForm() {
       animate="visible"
       className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-gray-100 relative overflow-hidden"
     >
-             <AnimatedBackground prefersReducedMotion={prefersReducedMotion} />
+      <AnimatedBackground prefersReducedMotion={prefersReducedMotion} />
 
       <div className="py-4 md:py-8 px-2 md:px-4">
         <motion.div
           variants={sectionVariants}
           className="max-w-5xl mx-auto bg-white rounded-xl md:rounded-2xl shadow-xl md:shadow-2xl overflow-hidden"
         >
-                     <AnimatedHeader prefersReducedMotion={prefersReducedMotion} />
+          <AnimatedHeader prefersReducedMotion={prefersReducedMotion} />
 
           <div className="p-4 md:p-8 space-y-6 md:space-y-10">
             {/* Personal Information */}
@@ -78,14 +89,17 @@ export default function RegistrationForm() {
               prefersReducedMotion={prefersReducedMotion}
             />
 
-                         <SubmitButton
-               isSubmitting={isSubmitting}
-               onSubmit={handleSubmit}
-               prefersReducedMotion={prefersReducedMotion}
-             />
+            <SubmitButton
+              isSubmitting={isSubmitting}
+              onSubmit={handleFormSubmit}
+              prefersReducedMotion={prefersReducedMotion}
+            />
           </div>
         </motion.div>
       </div>
+      {showErrorModal && (
+        <ErrorModal errors={errors} onClose={() => setShowErrorModal(false)} prefersReducedMotion={prefersReducedMotion} />
+      )}
     </motion.div>
   );
 }

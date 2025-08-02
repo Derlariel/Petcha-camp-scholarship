@@ -64,7 +64,7 @@ const CampInfoSection: React.FC<CampInfoSectionProps> = ({
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">อาหารที่แพ้ (ไม่บังคับ)</label>
           <textarea
-            value={formData.food_allergies || ''}
+            value={formData.food_allergies || '-'}
             onChange={(e) => handleInputChange('food_allergies', e.target.value)}
             rows={3}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -75,7 +75,7 @@ const CampInfoSection: React.FC<CampInfoSectionProps> = ({
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">โรคประจำตัว (ไม่บังคับ)</label>
           <textarea
-            value={formData.medical_conditions || ''}
+            value={formData.medical_conditions || '-'}
             onChange={(e) => handleInputChange('medical_conditions', e.target.value)}
             rows={3}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"

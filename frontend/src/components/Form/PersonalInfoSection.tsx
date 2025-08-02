@@ -82,7 +82,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-orange-500  font-bold text-lg md:text-xl mb-2 md:mb-3"
+                className="text-orange-500  font-extrabold text-xl md:text-2xl mb-2 md:mb-3"
               >
                 ด้าน{formData.scholarship_category}
               </motion.p>
@@ -147,7 +147,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             value={formData.academic_year || ''}
             onChange={(e) => handleInputChange('academic_year', parseInt(e.target.value) || undefined)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="2568"
+            placeholder="1"
           />
         </div>
 
@@ -175,7 +175,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           <label className="block text-sm font-medium text-gray-700 mb-1">MBTI (ไม่บังคับ)</label>
           <input
             type="text"
-            value={formData.mbti || ''}
+            value={formData.mbti || '-'}
             onChange={(e) => handleInputChange('mbti', e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="เช่น ENFP"
