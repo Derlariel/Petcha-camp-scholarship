@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+    --font-noto-sans-thai: "Noto Sans Thai", sans-serif;
+    --font-poppins: "Poppins", sans-serif;
+}
+
