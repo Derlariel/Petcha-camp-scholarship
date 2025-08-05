@@ -27,7 +27,6 @@ export const useRegistration = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  // ตรวจสอบ reduced motion preference
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
@@ -38,30 +37,25 @@ export const useRegistration = () => {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // จัดการการเปลี่ยนแปลง input fields
   const handleInputChange = (field: keyof RegistrationRequest, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // ลบ error เมื่อผู้ใช้เริ่มพิมพ์
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  // จัดการการเปลี่ยนแปลง hints
   const handleHintChange = (index: number, value: string) => {
     const newHints = [...formData.hints];
     newHints[index] = value;
     setFormData(prev => ({ ...prev, hints: newHints }));
   };
 
-  // ตรวจสอบความถูกต้องของ form
   const validateForm = (): boolean => {
     const newErrors = validateRegistrationForm(formData);
     setErrors(newErrors);
     return isFormValid(newErrors);
   };
 
-  // จัดการการส่ง form
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
@@ -81,7 +75,6 @@ export const useRegistration = () => {
     }
   };
 
-  // Reset form
   const resetForm = () => {
     setFormData({
       scholarship_type: 'เพชรพระจอมเกล้า',
@@ -106,20 +99,17 @@ export const useRegistration = () => {
   };
 
   return {
-    // State
     formData,
     isSubmitting,
     showSuccess,
     errors,
     prefersReducedMotion,
     
-    // Actions
     handleInputChange,
     handleHintChange,
     handleSubmit,
     resetForm,
     
-    // Computed
     isFormValid: () => isFormValid(errors)
   };
 };

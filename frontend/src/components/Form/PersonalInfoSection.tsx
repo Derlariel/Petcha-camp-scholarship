@@ -5,7 +5,6 @@ import { sectionVariants, imageVariants, reducedMotionVariants } from '@/utils/a
 import type { RegistrationRequest } from '@/types/api';
 import { CATEGORY_IMAGES } from '@/constants/categoryImage';
 import { SHIRT_SIZES } from '@/constants/shirtSizes';
-import { DEPARTMENTS } from '@/constants/departments';
 
 interface PersonalInfoSectionProps {
   formData: RegistrationRequest;
@@ -154,8 +153,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">ภาควิชา *</label>
           <input
-            type="text"
-            value={formData.department_code || ''}
+            type="text"      
             onChange={(e) => handleInputChange('department_code', e.target.value)}
             className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.department_code ? 'border-red-500' : 'border-gray-300'}`}
             placeholder="เช่น วิศวกรรมคอมพิวเตอร์ (ตัวย่อ)"
