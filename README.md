@@ -8,7 +8,7 @@ A full-stack web application for managing registration and activities of **Petch
 
 ## 📌 Objectives
 
-- Register students for Petcha Camp (30–31 August 2568)
+- Register students for Petcha Camp (-)
 - Collect personal and academic data for showcasing scholarship work (20th Anniversary of Petcha)
 - Create buddy chains (สายรหัส)
 - Randomly assign groups and buddies
@@ -58,19 +58,6 @@ A full-stack web application for managing registration and activities of **Petch
   - Proud Achievement (max 500 chars)
   - Instagram (optional)
   - 10 Clues (for buddy guessing)
-
----
-
-### 🔮 PHASE 2: Card & Buddy Display
-
-- 📇 **Card Display:** Show student cards using collected data
-- 🔀 **Group Assignment:** 
-  - Group A/B/C/D/E (based on scholarship category)
-  - Group 1-6 (random)
-- 🎯 **Buddy Matching:**
-  - One-to-one buddy pairing
-  - Each user gets their buddy's **QR Code**
-  - Daily clue reveal: 1 clue/day for 10 days
 
 ---
 
