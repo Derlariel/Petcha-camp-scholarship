@@ -1,4 +1,3 @@
-// services/api.ts
 import type { RegistrationRequest } from '../types/api';
 
 const API_BASE = 'http://localhost:3000/api';

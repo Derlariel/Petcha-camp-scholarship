@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
+const { appendToSheet, testConnection } = require('./src/config/google');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -12,65 +14,72 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
   credentials: true
 }));
-
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: 'Too many requests from this IP, please try again later.'
 });
 app.use(limiter);
-
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.get('/', (req, res) => {
-  res.json({ 
-    success: true, 
+  res.json({
+    success: true,
     message: 'Petcha Camp API is running!',
     timestamp: new Date().toISOString()
   });
 });
 
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    success: true, 
-    status: 'OK',
-    timestamp: new Date().toISOString()
-  });
+app.get('/api/health', async (req, res) => {
+  const result = await testConnection();
+  if (result.success) {
+    res.json({ success: true, status: 'OK', sheetTitle: result.title });
+  } else {
+    res.status(500).json({ success: false, status: 'ERROR', error: result.error });
+  }
 });
 
-try {
-  const registrationRoutes = require('./src/routes/registration');
-  app.use('/api/registrations', registrationRoutes);
-  console.log('✅ Registration routes loaded successfully');
-} catch (error) {
-  console.error('❌ Failed to load registration routes:', error.message);
-  console.log('📁 Looking for routes in: ./src/routes/registration');
-  
+// app.post('/api/registrations', async (req, res) => {
+//   try {
+//     const data = req.body.data; 
+//     if (!Array.isArray(data)) {
+//       return res.status(400).json({ success: false, message: 'Invalid data format, expected array' });
+//     }
+
+//     const result = await appendToSheet(data);
+//     res.json({ success: true, rowIndex: result.rowIndex });
+//   } catch (error) {
+//     console.error('POST /api/registrations error:', error);
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// });
+
+app.post('/api/registrations', async (req, res) => {
   try {
-    const registrationRoutes = require('./src/routes/registration');
-    app.use('/api/registrations', registrationRoutes);
-    console.log('✅ Registration routes loaded from src/routes/');
-  } catch (err) {
-    console.error('❌ Could not find registration routes in any location');
-    console.log('📋 Available paths to check:');
-    console.log('   - ./src/routes/registration');
-    console.log('   - ./src/routes/registration.js');
+    const data = req.body;
+
+    if (!data.scholarship_type || !data.scholarship_category || !data.nickname_th || !data.nickname_en || !data.department_code) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+
+    const result = await appendToSheet(data); 
+    res.json({ success: true, rowIndex: result.rowIndex });
+  } catch (error) {
+    console.error('POST /api/registrations error:', error);
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+});
+
 
 app.use('*', (req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Route not found',
-    path: req.originalUrl 
-  });
+  res.status(404).json({ success: false, message: 'Route not found', path: req.originalUrl });
 });
 
 app.use((error, req, res, next) => {
   console.error('Global error handler:', error);
-  res.status(500).json({ 
-    success: false, 
+  res.status(500).json({
+    success: false,
     message: 'Internal server error',
     error: process.env.NODE_ENV === 'development' ? error.message : undefined
   });
@@ -79,10 +88,8 @@ app.use((error, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   console.log(`📱 API URL: http://localhost:${PORT}`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/`);
-  console.log(`🩺 Health API: http://localhost:${PORT}/api/health`);
-  console.log(`📋 Registrations: http://localhost:${PORT}/api/registrations`);
-  console.log(`🧪 Test Sheets: http://localhost:${PORT}/api/registrations/test-sheets`);
+  console.log(`🩺 Health: http://localhost:${PORT}/api/health`);
+  console.log(`📋 Registrations: POST http://localhost:${PORT}/api/registrations`);
 });
 
 module.exports = app;

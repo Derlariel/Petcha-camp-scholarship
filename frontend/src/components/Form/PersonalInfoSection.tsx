@@ -1,11 +1,10 @@
 import React from 'react'
 import {motion, AnimatePresence} from "framer-motion"
-import {  User, GraduationCap, MessageSquare, Instagram, AlertCircle, Sparkles } from 'lucide-react';
+import {  User, GraduationCap, MessageSquare, AlertCircle, Sparkles } from 'lucide-react';
 import { sectionVariants, imageVariants, reducedMotionVariants } from '@/utils/animationVariants';
 import type { RegistrationRequest } from '@/types/api';
 import { CATEGORY_IMAGES } from '@/constants/categoryImage';
-import { SHIRT_SIZES } from '@/constants/shirtSizes';
-import { DEPARTMENTS } from '@/constants/departments';
+
 
 interface PersonalInfoSectionProps {
   formData: RegistrationRequest;
@@ -58,7 +57,6 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         </div>
       </div>
 
-      {/* Category Image Display */}
       <AnimatePresence mode="wait">
         <motion.div
           key={formData.scholarship_category}
@@ -78,7 +76,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
                 transition={{ duration: 0.2 }}
               />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-purple/50 to-transparent rounded-xl flex items-end justify-center">
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-purple/50 to-transparent rounded-xl flex items-end justify-center">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -86,7 +84,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
               >
                 ด้าน{formData.scholarship_category}
               </motion.p>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </AnimatePresence>
