@@ -18,7 +18,6 @@ const mascots = [
   { name: "Musician", image: Musician, color: "#e54d1d" },
 ];
 
-// Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -176,7 +175,6 @@ const Hero: React.FC = () => {
 
         {!isMobile && !prefersReducedMotion && (
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Animated sparkles */}
             {[...Array(6)].map((_, i) => (
               <motion.div
                 key={i}
@@ -196,7 +194,6 @@ const Hero: React.FC = () => {
               </motion.div>
             ))}
 
-            {/* Floating shapes */}
             <motion.div
               variants={getFloatingVariants()}
               animate="float"
@@ -212,7 +209,6 @@ const Hero: React.FC = () => {
         )}
 
         <div className="absolute inset-0 overflow-hidden">
-          {/* Overlay for better text readability */}
           <div className="absolute inset-0 bg-black/40" />
         </div>
 
@@ -229,7 +225,6 @@ const Hero: React.FC = () => {
                 className="w-16 h-16 md:w-28 md:h-28 drop-shadow-lg"
               />
             </motion.div>
-             {/* Logo Glow Effect */}
             <motion.div
               animate={{
                 opacity: [0.5, 1, 0.5],
@@ -244,9 +239,7 @@ const Hero: React.FC = () => {
             />
           </motion.div>
 
-          
-
-
+        
           <motion.div variants={sectionVariants} className="mb-8 md:mb-10">
             <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6">
               <img src={Typo} alt="Petcha Camp Typography" className="mx-auto max-h-20 md:max-h-32" />
@@ -256,7 +249,6 @@ const Hero: React.FC = () => {
               ค่ายสัมมนานักศึกษาทุนเพชรพระจอมเกล้าและแสดเหลืองเรืองรุ่ง 2568
             </h2>
 
-            {/* Mascots Section */}
             <div className="grid grid-cols-5 gap-4 md:gap-6 max-w-md mx-auto mb-6">
               {mascots.map((mascot, index) => (
                 <motion.div
@@ -303,7 +295,6 @@ const Hero: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Call to Action Button */}
           <motion.div variants={sectionVariants} className="mb-8 md:mb-10">
             <motion.button
               onClick={openModal}
@@ -352,29 +343,12 @@ const Hero: React.FC = () => {
                   วันที่ 30-31 สิงหาคม 2568
                 </span>
               </motion.div>
-
-              <motion.div
-                whileHover={!isMobile ? { scale: 1.05 } : {}}
-                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2 rounded-full border border-white/20"
-              >
-                <span className="text-lg md:text-xl">📍</span>
-                <span className="text-sm md:text-base">
-                  โรงแรม เขาใหญ่ จังหวัดนครราชสีมา
-                </span>
-              </motion.div>
             </div>
 
             <motion.div
               className="flex flex-wrap items-center justify-center gap-6 mt-6 md:mt-8"
               variants={sectionVariants}
             >
-              <motion.div
-                whileHover={!isMobile ? { scale: 1.1 } : {}}
-                className="flex items-center gap-2 text-white/70"
-              >
-                <Users className="w-4 h-4 md:w-5 md:h-5 text-orange-400" />
-                <span className="text-xs md:text-sm">100+ นักศึกษา</span>
-              </motion.div>
               <motion.div
                 whileHover={!isMobile ? { scale: 1.1 } : {}}
                 className="flex items-center gap-2 text-white/70"

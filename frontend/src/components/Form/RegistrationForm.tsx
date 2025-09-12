@@ -28,7 +28,6 @@ export default function RegistrationForm() {
 
   const [showErrorModal, setShowErrorModal] = React.useState(false);
 
-  // ฟังก์ชัน submit ใหม่
   const handleFormSubmit = async () => {
     if (!isFormValid()) {
       setShowErrorModal(true);

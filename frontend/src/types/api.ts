@@ -1,4 +1,5 @@
 export interface RegistrationData {
+  id: string;
   scholarship_type: 'เพชรพระจอมเกล้า' | 'แสดเหลืองเรืองรุ่ง';
   scholarship_category: 'ผู้นำ' | 'นวัตกรรม' | 'กีฬา' | 'เรียนดี' | 'ศิลป์วัฒนธรรม';
   nickname_th: string;

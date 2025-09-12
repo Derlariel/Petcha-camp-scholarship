@@ -1,4 +1,3 @@
-// Animation variants for mobile-friendly performance
 export const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -44,7 +43,6 @@ export const containerVariants = {
   
   
   
-  // Reduced motion variants for mobile
   export const reducedMotionVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },

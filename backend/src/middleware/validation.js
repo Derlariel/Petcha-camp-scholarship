@@ -6,14 +6,12 @@ const validateRegistrationData = (data) => {
     'academic_year', 'department_code', 'shirt_size', 'self_introduction', 'proud_achievement'
   ];
   
-  // Check required fields
   requiredFields.forEach(field => {
     if (!data[field] || data[field].toString().trim() === '') {
       errors.push(`${field} is required`);
     }
   });
   
-  // Validate specific field values
   const validScholarshipTypes = ['เพชรพระจอมเกล้า', 'แสดเหลืองเรืองรุ่ง'];
   const validCategories = ['ผู้นำ', 'นวัตกรรม', 'กีฬา', 'เรียนดี', 'ศิลป์วัฒนธรรม'];
   const validShirtSizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
@@ -30,7 +28,6 @@ const validateRegistrationData = (data) => {
     errors.push('Invalid shirt size');
   }
   
-  // Text length validations
   if (data.self_introduction && data.self_introduction.length > 100) {
     errors.push('Self introduction must be 100 characters or less');
   }
@@ -39,25 +36,21 @@ const validateRegistrationData = (data) => {
     errors.push('Proud achievement must be 500 characters or less');
   }
   
-  // Instagram handle validation (improved)
   if (data.instagram_handle) {
     if (data.instagram_handle.length > 50) {
       errors.push('Instagram handle must be 50 characters or less');
     }
-    // Remove @ if present and validate format
     const cleanHandle = data.instagram_handle.replace(/^@/, '');
     if (!/^[a-zA-Z0-9._]{1,30}$/.test(cleanHandle)) {
       errors.push('Instagram handle can only contain letters, numbers, dots, and underscores');
     }
   }
   
-  // MBTI validation (more flexible)
   if (data.mbti) {
     const mbtiUpper = data.mbti.toUpperCase();
     if (!/^[A-Z]{4}$/.test(mbtiUpper)) {
       errors.push('MBTI must be 4 letters');
     } else {
-      // Validate actual MBTI format
       const validMBTI = /^[EI][SN][TF][JP]$/;
       if (!validMBTI.test(mbtiUpper)) {
         errors.push('Invalid MBTI format (must be like INTJ, ESFP, etc.)');
@@ -65,22 +58,18 @@ const validateRegistrationData = (data) => {
     }
   }
   
-  // Academic year validation
   if (data.academic_year && (data.academic_year < 1 || data.academic_year > 5)) {
     errors.push('Academic year must be between 1-5');
   }
   
-  // Department code validation
   if (data.department_code && data.department_code.length > 10) {
     errors.push('Department code must be 10 characters or less');
   }
   
-  // Email validation (if provided)
   if (data.email && !validateEmail(data.email)) {
     errors.push('Invalid email format');
   }
   
-  // Phone validation (if provided)
   if (data.phone && !validatePhone(data.phone)) {
     errors.push('Invalid phone format (must be 10 digits starting with 0)');
   }
@@ -101,9 +90,7 @@ const validateHints = (hints) => {
     return errors;
   }
   
-  // Validate each hint
   hints.forEach((hint, index) => {
-    // Allow null, undefined, or empty string
     if (hint !== null && hint !== undefined && hint !== '') {
       if (typeof hint !== 'string') {
         errors.push(`Hint ${index + 1} must be a string`);
@@ -122,7 +109,6 @@ const validateEmail = (email) => {
 };
 
 const validatePhone = (phone) => {
-  // Allow both string and number, but convert to string for validation
   const phoneStr = phone.toString();
   const phoneRegex = /^0[0-9]{9}$/;
   return phoneRegex.test(phoneStr);
@@ -141,7 +127,6 @@ const validateRegistration = (req, res, next) => {
   try {
     console.log('🔍 Received registration data:', JSON.stringify(req.body, null, 2));
     
-    // Sanitize input data
     const sanitizedBody = {};
     for (const [key, value] of Object.entries(req.body)) {
       if (key === 'hints') {
@@ -153,7 +138,6 @@ const validateRegistration = (req, res, next) => {
       }
     }
     
-    // Auto-convert MBTI to uppercase if provided
     if (sanitizedBody.mbti && typeof sanitizedBody.mbti === 'string') {
       sanitizedBody.mbti = sanitizedBody.mbti.toUpperCase();
     }
@@ -163,7 +147,6 @@ const validateRegistration = (req, res, next) => {
     
     const { hints, ...registrationData } = req.body;
     
-    // Validate data
     const registrationErrors = validateRegistrationData(registrationData);
     const hintErrors = validateHints(hints);
     

@@ -31,7 +31,6 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
         <h1 className="text-2xl md:text-4xl font-bold mb-1 md:mb-2">ลงทะเบียนค่าย Petcha Camp</h1>
         <p className="text-orange-100 text-sm md:text-lg">30-31 สิงหาคม 2568 ณ โรงแรม เขาใหญ่ จังหวัดนครราชสีมา</p>
         
-        {/* Floating icons - Hidden on mobile for performance */}
         {!prefersReducedMotion && (
           <>
             <motion.div

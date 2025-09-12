@@ -19,42 +19,38 @@ async function appendToSheet(data) {
     
     await doc.loadInfo();
     console.log('Loaded spreadsheet:', doc.title);
-    
-    let sheet;
-    try {
-      sheet = doc.sheetsByTitle[process.env.GOOGLE_SHEET_NAME];
-      if (!sheet) {
-        sheet = doc.sheetsByIndex[0];
-        console.log(`Sheet "${process.env.GOOGLE_SHEET_NAME}" not found, using first sheet: ${sheet.title}`);
-      } else {
-        console.log(`Using sheet: ${sheet.title}`);
-      }
-    } catch (error) {
-      console.error('Error accessing sheet:', error);
-      sheet = doc.sheetsByIndex[0];
-      console.log('Fallback to first sheet:', sheet.title);
-    }
+
+    let sheet = doc.sheetsByTitle[process.env.GOOGLE_SHEET_NAME] || doc.sheetsByIndex[0];
+    console.log(`Using sheet: ${sheet.title}`);
+
+    await sheet.loadCells()
+    const existingRows = await sheet.getRows();
+    const newID = (existingRows.length + 1).toString();
 
     const rowData = {
-      'ID': data[0],
-      'Scholarship Type': data[1],
-      'Scholarship Category': data[2],
-      'Nickname (TH)': data[3],
-      'Nickname (EN)': data[4],
-      'Academic Year': data[5],
-      'Department Code': data[6],
-      'Can Attend': data[8],
-      'Food Allergies': data[9],
-      'Medical Conditions': data[10],
-      'Shirt Size': data[11],
-      'Instagram Handle': data[14], 
+      'ID' : newID,
+      'Scholarship Type': data.scholarship_type,
+      'Scholarship Category': data.scholarship_category,
+      'Nickname (TH)': data.nickname_th,
+      'Nickname (EN)': data.nickname_en,
+      'Academic Year': data.academic_year ?? '',
+      'Department Code': data.department_code,
+      'MBTI': data.mbti ?? '',
+      'Can Attend': data.can_attend ? 'Yes' : 'No',
+      'Food Allergies': data.food_allergies ?? '',
+      'Medical Conditions': data.medical_conditions ?? '',
+      'Shirt Size': data.shirt_size,
+      'Self Introduction': data.self_introduction,
+      'Proud Achievement': data.proud_achievement,
+      'Instagram Handle': data.instagram_handle ?? '',
+      'Hints': (data.hints || []).join(', ')
     };
 
     console.log('Row data to add:', rowData);
-    
+
     const newRow = await sheet.addRow(rowData);
     console.log('Successfully added row with index:', newRow.rowIndex);
-    
+
     return { success: true, rowIndex: newRow.rowIndex };
     
   } catch (error) {
