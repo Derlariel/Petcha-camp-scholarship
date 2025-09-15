@@ -340,7 +340,7 @@ const Hero: React.FC = () => {
               >
                 <span className="text-lg md:text-xl">📅</span>
                 <span className="text-sm md:text-base">
-                  วันที่ 30-31 สิงหาคม 2568
+                  วันที่ 21 กันยายน 2568
                 </span>
               </motion.div>
             </div>
