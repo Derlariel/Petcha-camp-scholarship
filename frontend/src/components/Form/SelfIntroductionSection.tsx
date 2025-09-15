@@ -14,8 +14,7 @@ interface SelfIntroductionSectionProps {
 const SelfIntroductionSection: React.FC<SelfIntroductionSectionProps> = ({
   formData,
   handleInputChange,
-  errors,
-  prefersReducedMotion
+  errors
 }) => {
   return (
     <motion.div variants={sectionVariants} className="space-y-4 md:space-y-6">

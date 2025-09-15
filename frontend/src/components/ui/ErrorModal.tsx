@@ -10,23 +10,9 @@ type ErrorModalProps = {
 const ErrorModal: React.FC<ErrorModalProps> = ({ errors, onClose, prefersReducedMotion }) => {
   const errorMessages = Object.entries(errors)
     .filter(([_, msg]) => msg)
-    .map(([field, msg]) => `${msg}`);
+    .map(([, msg]) => `${msg}`);
 
   if (errorMessages.length === 0) return null;
-
-  const modalVariants = {
-    hidden: { opacity: 0, scale: prefersReducedMotion ? 1 : 0.95 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      transition: { type: 'spring', stiffness: 300, damping: 30 } 
-    },
-    exit: { 
-      opacity: 0, 
-      scale: prefersReducedMotion ? 1 : 0.95, 
-      transition: { duration: 0.2 } 
-    }
-  };
 
   const overlayVariants = {
     hidden: { opacity: 0 },
@@ -42,7 +28,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ errors, onClose, prefersReduced
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { type: 'spring', stiffness: 300, damping: 30, delay: 0.1 }
+      transition: { type: 'spring' as const, stiffness: 300, damping: 30, delay: 0.1 }
     },
     exit: { 
       y: prefersReducedMotion ? 0 : 40, 

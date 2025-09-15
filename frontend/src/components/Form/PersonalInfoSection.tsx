@@ -1,6 +1,6 @@
 import React from 'react'
 import {motion, AnimatePresence} from "framer-motion"
-import {  User, GraduationCap, MessageSquare, AlertCircle, Sparkles } from 'lucide-react';
+import {  User } from 'lucide-react';
 import { sectionVariants, imageVariants, reducedMotionVariants } from '@/utils/animationVariants';
 import type { RegistrationRequest } from '@/types/api';
 import { CATEGORY_IMAGES } from '@/constants/categoryImage';

@@ -14,8 +14,7 @@ interface HintsSectionProps {
 const HintsSection: React.FC<HintsSectionProps> = ({
   formData,
   handleHintChange,
-  errors,
-  prefersReducedMotion
+  errors
 }) => {
   return (
     <motion.div variants={sectionVariants} className="space-y-4 md:space-y-6">

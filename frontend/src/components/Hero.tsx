@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Sparkles, ArrowRight, X, Star, Users, Award } from "lucide-react";
+import { Sparkles, ArrowRight, X, Star, Award } from "lucide-react";
 import RegistrationForm from "@/components/Form/RegistrationForm";
 import PetchLogo from "/petcha-logo.png";
 import Athletic from "@/assets/athletic.PNG";
@@ -39,7 +39,7 @@ const sectionVariants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: "easeOut",
+      ease: [0.4, 0, 0.2, 1] as const,
     },
   },
 };
@@ -92,7 +92,7 @@ const Hero: React.FC = () => {
               duration: 4,
               repeat: Infinity,
               repeatType: "reverse" as const,
-              ease: "easeInOut",
+              ease: [0.4, 0, 0.2, 1] as const,
             },
           },
   });
@@ -107,7 +107,7 @@ const Hero: React.FC = () => {
             transition: {
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: [0.4, 0, 0.2, 1] as const,
             },
           },
   });
@@ -119,7 +119,7 @@ const Hero: React.FC = () => {
       transition: {
         duration: 8,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: [0.4, 0, 0.2, 1] as const,
       },
     },
     animate2: {
@@ -128,7 +128,7 @@ const Hero: React.FC = () => {
       transition: {
         duration: 10,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: [0.4, 0, 0.2, 1] as const,
         delay: 2,
       },
     },
@@ -143,7 +143,7 @@ const Hero: React.FC = () => {
             transition: {
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: [0.4, 0, 0.2, 1] as const,
             },
           },
   };
@@ -233,7 +233,7 @@ const Hero: React.FC = () => {
               transition={{
                 duration: 3,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: [0.4, 0, 0.2, 1] as const
               }}
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 md:w-64 md:h-64 bg-gradient-to-r from-orange-400/30 to-yellow-400/30 rounded-full blur-xl -z-10"
             />
@@ -269,7 +269,7 @@ const Hero: React.FC = () => {
                       backgroundColor: currentMascot === index ? mascot.color : '#dedbdb',
                     }}
                     animate={currentMascot === index ? { y: [-2, 2, -2] } : { y: 0 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{ duration: 2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] as const }}
                   >
                     <img 
                       src={mascot.image}
@@ -321,7 +321,7 @@ const Hero: React.FC = () => {
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: [0.4, 0, 0.2, 1] as const,
                 }}
               >
                 <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />

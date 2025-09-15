@@ -5,6 +5,7 @@ import { submitRegistration } from '@/services/apiToBE';
 
 export const useRegistration = () => {
   const [formData, setFormData] = useState<RegistrationRequest>({
+    id: '',
     scholarship_type: 'เพชรพระจอมเกล้า',
     scholarship_category: 'ผู้นำ',
     nickname_th: '',
@@ -77,6 +78,7 @@ export const useRegistration = () => {
 
   const resetForm = () => {
     setFormData({
+      id:'',
       scholarship_type: 'เพชรพระจอมเกล้า',
       scholarship_category: 'ผู้นำ',
       nickname_th: '',
