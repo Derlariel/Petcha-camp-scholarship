@@ -66,7 +66,12 @@ export const useRegistration = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await submitRegistration(formData);
+      const cleanedHints = formData.hints.map(h => h.trim());
+      const response = await submitRegistration({
+      ...formData,
+      hints: cleanedHints
+    });
+
       if (response.success) {
         setShowSuccess(true);
       } else {
@@ -93,7 +98,7 @@ export const useRegistration = () => {
       academic_year: 1,
       department_code: '',
       mbti: '',
-      can_attend: false,
+      can_attend: true,
       food_allergies: '',
       medical_conditions: '',
       shirt_size: 'M',

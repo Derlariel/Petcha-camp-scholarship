@@ -30,10 +30,11 @@ async function appendToSheet(data) {
 
     const existingRows = await sheet.getRows();
     const newID = (existingRows.length + 1).toString();
-        const participationMap = {
-     activity: 'ชั่วโมงกิจกรรม',
-     orientation: 'ชั่วโมงปัจฉิมนิเทศ'
-  };
+
+    const participationMap = {
+      activity: "ชั่วโมงกิจกรรม",
+      orientation: "ชั่วโมงปัจฉิมนิเทศ",
+    };
 
     const rowData = {
       ID: newID,
@@ -47,15 +48,15 @@ async function appendToSheet(data) {
       "Academic Year": data.academic_year ?? "",
       "Department Code": data.department_code ?? "",
       MBTI: data.mbti ?? "",
-      "Can Attend": data.can_attend ? "Yes" : "No",
+      "Can Attend": data.can_attend === true ? "Yes" : "No",
       "Food Allergies": data.food_allergies ?? "",
       "Medical Conditions": data.medical_conditions ?? "",
       "Shirt Size": data.shirt_size ?? "",
-      "Self Introduction": data.self_introduction ?? "",
-      "Proud Achievement": data.proud_achievement ?? "",
+      "Self Introduction": (data.self_introduction ?? "").replace(/\n/g, " "),
+      "Proud Achievement": (data.proud_achievement ?? "").replace(/\n/g, " "),
       "Activity Hours": participationMap[data.participation_benefits] || "",
       "Instagram Handle": data.instagram_handle ?? "",
-      Hints: data.hints ?? "",
+      "Hints": (data.hints ?? "").toString()
     };
 
     console.log("Row data to add:", rowData);

@@ -36,7 +36,6 @@ const createRegistration = async (req, res) => {
 
     const { hints, ...registrationData } = req.body;
 
-    // 🛡 Validate
     const registrationErrors = validateRegistrationData(registrationData);
     if (registrationErrors.length > 0) {
       return res.status(400).json({
@@ -55,8 +54,6 @@ const createRegistration = async (req, res) => {
       });
     }
 
-
-    // 💾 Insert registration
     const [result] = await connection.execute(`
       INSERT INTO registrations (
         student_id, fullname_th, fullname_en, nickname_th, nickname_en,
@@ -89,7 +86,6 @@ const createRegistration = async (req, res) => {
     const registrationId = result.insertId;
     console.log('✅ Registration saved to database with ID:', registrationId);
 
-    // 💾 Insert hints
     for (let i = 0; i < hints.length; i++) {
       await connection.execute(
         'INSERT INTO user_hints (registration_id, hint_number, hint_text) VALUES (?, ?, ?)',
@@ -100,13 +96,11 @@ const createRegistration = async (req, res) => {
     await connection.commit();
     console.log('✅ Transaction committed successfully');
 
-    // 📊 Prepare to sync to Google Sheets
     const hintsText = Array.isArray(hints)
       ? hints.map((hint, index) => `${index + 1}: ${hint.trim()}`).join('; ')
       : '';
 
     const now = new Date().toISOString();
-    console.log('Registration Data before sheet:', registrationData);
     
     const sheetData = {
       ...registrationData,
@@ -114,7 +108,7 @@ const createRegistration = async (req, res) => {
       hints: hintsText,
       created_at: now,
       updated_at: now,
-      can_attend: registrationData.can_attend !== false ? 'Yes' : 'No',
+      can_attend: registrationData.can_attend !== false ? true : false,
       mbti: registrationData.mbti || '',
       food_allergies: registrationData.food_allergies || '',
       medical_conditions: registrationData.medical_conditions || '',
@@ -122,10 +116,8 @@ const createRegistration = async (req, res) => {
       academic_year: registrationData.academic_year || 2568,
       participation_benefits: registrationData.participation_benefits
     };
-    
-    console.log('Sheet Data:', JSON.stringify(sheetData, null, 2));
 
-    console.log('📊 Preparing to send data to Google Sheets...');
+    console.log('📊 Sending to Google Sheets...', sheetData);
 
     try {
       const sheetResult = await appendToSheet(sheetData);
@@ -138,8 +130,6 @@ const createRegistration = async (req, res) => {
       });
     } catch (sheetError) {
       console.error('❌ Failed to send data to Google Sheets:', sheetError.message);
-      console.error('Sheet Error Details:', sheetError);
-
       res.status(201).json({
         success: true,
         message: 'Registration created successfully, but failed to sync with Google Sheets',
@@ -152,38 +142,13 @@ const createRegistration = async (req, res) => {
   } catch (error) {
     await connection.rollback();
     console.error('❌ Error creating registration:', error);
-
-    if (error.code === 'ER_DUP_ENTRY') {
-      res.status(409).json({ success: false, message: 'Duplicate entry detected' });
-    } else {
-      res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
-    }
+    res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
   } finally {
     connection.release();
   }
 };
 
-const testGoogleSheetsConnection = async (req, res) => {
-  try {
-    const { testConnection } = require('../services/google');
-    const result = await testConnection();
-
-    res.json({
-      success: result.success,
-      message: result.success ? 'Google Sheets connection successful' : 'Google Sheets connection failed',
-      data: result
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Error testing Google Sheets connection',
-      error: error.message
-    });
-  }
-};
-
 module.exports = {
   getAllRegistrations,
-  createRegistration,
-  testGoogleSheetsConnection
+  createRegistration
 };
