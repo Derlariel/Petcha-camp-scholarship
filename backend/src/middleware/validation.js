@@ -2,8 +2,10 @@ const validateRegistrationData = (data) => {
   const errors = [];
   
   const requiredFields = [
-    'scholarship_type', 'scholarship_category', 'nickname_th', 'nickname_en',
-    'academic_year', 'department_code', 'shirt_size', 'self_introduction', 'proud_achievement'
+    'student_id', 'fullname_th', 'fullname_en',
+    'nickname_th', 'nickname_en','scholarship_type', 'scholarship_category', 
+    'academic_year', 'department_code', 'shirt_size', 'self_introduction', 'proud_achievement',
+    'participation_benefits', 'student_id', 'fullname'
   ];
   
   requiredFields.forEach(field => {
@@ -15,6 +17,7 @@ const validateRegistrationData = (data) => {
   const validScholarshipTypes = ['เพชรพระจอมเกล้า', 'แสดเหลืองเรืองรุ่ง'];
   const validCategories = ['ผู้นำ', 'นวัตกรรม', 'กีฬา', 'เรียนดี', 'ศิลป์วัฒนธรรม'];
   const validShirtSizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+  const validParticipationBenefits = ['activity', 'orientation'];
   
   if (data.scholarship_type && !validScholarshipTypes.includes(data.scholarship_type)) {
     errors.push('Invalid scholarship type');
@@ -26,6 +29,10 @@ const validateRegistrationData = (data) => {
   
   if (data.shirt_size && !validShirtSizes.includes(data.shirt_size)) {
     errors.push('Invalid shirt size');
+  }
+
+  if (data.participation_benefits && !validParticipationBenefits.includes(data.participation_benefits)) {
+    errors.push('Invalid participation benefits value');
   }
   
   if (data.self_introduction && data.self_introduction.length > 100) {
@@ -65,7 +72,18 @@ const validateRegistrationData = (data) => {
   if (data.department_code && data.department_code.length > 10) {
     errors.push('Department code must be 10 characters or less');
   }
-  
+
+  if (data.student_id) {
+    const studentIdRegex = /^\d{10}$/;
+    if (!studentIdRegex.test(data.student_id)) {
+      errors.push('Student ID must be exactly 10 digits');
+    }
+  }
+
+  if (data.fullname && data.fullname.length > 100) {
+    errors.push('Full name must be 100 characters or less');
+  }
+
   if (data.email && !validateEmail(data.email)) {
     errors.push('Invalid email format');
   }

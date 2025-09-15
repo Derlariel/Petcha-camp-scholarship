@@ -4,6 +4,7 @@ import { GraduationCap, AlertCircle } from 'lucide-react';
 import { sectionVariants } from '@/utils/animationVariants';
 import type { RegistrationRequest } from '@/types/api';
 import { SHIRT_SIZES } from '@/constants/shirtSizes';
+import { PARTICIPATION_BENEFITS } from '@/constants/participationBenefits';
 
 interface CampInfoSectionProps {
   formData: RegistrationRequest;
@@ -41,10 +42,10 @@ const CampInfoSection: React.FC<CampInfoSectionProps> = ({
           />
           <label htmlFor="can_attend" className="text-sm text-gray-700 leading-relaxed">
             ข้าพเจ้าสามารถเข้าร่วมค่ายทุนเพชรพระจอมเกล้าและแสดเหลืองเรืองรุ่ง ปีการศึกษา 2568 
-            ได้ในวันที่ <span className="font-bold text-orange-600">30-31 สิงหาคม (2 วัน 1 คืน)</span> ณ โรงแรม เขาใหญ่ จังหวัดนครราชสีมา
+            ได้ในวัน <span className="font-bold text-orange-600">อาทิตย์ที่ 21 กันยายน 2568</span> ณ โรงอาหารอาคารพระจอมเกล้าราชานุสรณ์ 190 ปี
             <br />
             <span className="text-xs text-gray-500 mt-2 block">
-              * หากไม่สามารถเข้าร่วมได้ กรุณาส่งอีเมลชี้แจงเหตุผลมาที่ xxx@gmail.com
+              * หากไม่สามารถเข้าร่วมได้ กรุณาส่งอีเมลชี้แจงเหตุผลมาที่ wimolwan.cha@kmutt.ac.th
             </span>
           </label>
         </div>
@@ -83,7 +84,21 @@ const CampInfoSection: React.FC<CampInfoSectionProps> = ({
           />
         </div>
       </div>
-
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">ชั่วโมงที่ต้องการรับ</label>
+        <select 
+          value={formData.participation_benefits ?? 'activity'}
+          onChange={(e) => {
+            console.log('Selected participation benefit:', e.target.value);
+            handleInputChange('participation_benefits', e.target.value as 'activity' | 'orientation');
+          }}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {PARTICIPATION_BENEFITS.map((participation) => (
+            <option key={participation.value} value={participation.value}>{participation.label}</option>
+          ))}
+        </select>
+      </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">ขนาดเสื้อ</label>
         <select 

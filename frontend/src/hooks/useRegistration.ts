@@ -5,22 +5,26 @@ import { submitRegistration } from '@/services/apiToBE';
 
 export const useRegistration = () => {
   const [formData, setFormData] = useState<RegistrationRequest>({
-    id: '',
-    scholarship_type: 'เพชรพระจอมเกล้า',
-    scholarship_category: 'ผู้นำ',
-    nickname_th: '',
-    nickname_en: '',
-    academic_year: 1,
-    department_code: '',
-    mbti: '',
-    can_attend: false,
-    food_allergies: '',
-    medical_conditions: '',
-    shirt_size: 'M',
-    self_introduction: '',
-    proud_achievement: '',
-    instagram_handle: '',
-    hints: Array(10).fill('')
+   id:'',
+      student_id: '',
+      fullname_th: '',
+      fullname_en: '',
+      nickname_th: '',
+      nickname_en: '',
+      scholarship_type: 'เพชรพระจอมเกล้า',
+      scholarship_category: 'ผู้นำ',
+      academic_year: 1,
+      department_code: '',
+      mbti: '',
+      can_attend: false,
+      food_allergies: '',
+      medical_conditions: '',
+      shirt_size: 'M',
+      self_introduction: '',
+      proud_achievement: '',
+      instagram_handle: '',
+      hints: Array(10).fill(''),
+      participation_benefits: 'activity'
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,10 +83,13 @@ export const useRegistration = () => {
   const resetForm = () => {
     setFormData({
       id:'',
-      scholarship_type: 'เพชรพระจอมเกล้า',
-      scholarship_category: 'ผู้นำ',
+      student_id: '',
+      fullname_th: '',
+      fullname_en: '',
       nickname_th: '',
       nickname_en: '',
+      scholarship_type: 'เพชรพระจอมเกล้า',
+      scholarship_category: 'ผู้นำ',
       academic_year: 1,
       department_code: '',
       mbti: '',
@@ -93,7 +100,8 @@ export const useRegistration = () => {
       self_introduction: '',
       proud_achievement: '',
       instagram_handle: '',
-      hints: Array(10).fill('')
+      hints: Array(10).fill(''),
+      participation_benefits: 'activity'
     });
     setErrors({});
     setShowSuccess(false);

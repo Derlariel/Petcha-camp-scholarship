@@ -94,13 +94,81 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
           transition={{ duration: 0.2 }}
         >
+          <label className="block text-sm font-semibold text-gray-700 mb-2">รหัสนักศึกษา *</label>
+          <input
+            type="text"
+            value={formData.student_id}
+            onChange={(e) => handleInputChange('student_id', e.target.value)}
+            className={`w-full border-2 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-300 ${errors.student_id ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-orange-400 focus:border-orange-400 hover:border-orange-300'}`}
+            placeholder="เช่น 66xxxxxxx"
+            maxLength={11}
+          />
+          {errors.student_id && (
+            <motion.p
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-red-500 text-sm mt-2"
+            >
+              {errors.student_id}
+            </motion.p>
+          )}
+        </motion.div>
+        <motion.div
+          whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
+          <label className="block text-sm font-semibold text-gray-700 mb-2">ชื่อจริง - นามสกุล (ภาษาไทย) *</label>
+          <input
+            type="text"
+            value={formData.fullname_th || ''}
+            onChange={(e) => handleInputChange('fullname_th', e.target.value)}
+            className={`w-full border-2 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-300 ${errors.fullname_th ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-orange-400 focus:border-orange-400 hover:border-orange-300'}`}
+            placeholder="เช่น สมชาย รักเรียน"
+          />
+          {errors.fullname_th && (
+            <motion.p
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-red-500 text-sm mt-2"
+            >
+              {errors.fullname_th}
+            </motion.p>
+          )}
+        </motion.div>
+        <motion.div
+          whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
+          <label className="block text-sm font-semibold text-gray-700 mb-2">ชื่อจริง - นามสกุล (ภาษาอังกฤษ) *</label>
+          <input
+            type="text"
+            value={formData.fullname_en || ''}
+            onChange={(e) => handleInputChange('fullname_en', e.target.value)}
+            className={`w-full border-2 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-300 ${errors.fullname_en ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-orange-400 focus:border-orange-400 hover:border-orange-300'}`}
+            placeholder="e.g. Somchai Rakrien"
+          />
+          {errors.fullname_en && (
+            <motion.p
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-red-500 text-sm mt-2"
+            >
+              {errors.fullname_en}
+            </motion.p>
+          )}
+        </motion.div>
+
+        <motion.div
+          whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+          transition={{ duration: 0.2 }}
+        >
           <label className="block text-sm font-semibold text-gray-700 mb-2">ชื่อเล่น (ภาษาไทย) *</label>
           <input
             type="text"
             value={formData.nickname_th}
             onChange={(e) => handleInputChange('nickname_th', e.target.value)}
             className={`w-full border-2 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 transition-all duration-300 ${errors.nickname_th ? 'border-red-400 focus:ring-red-400' : 'border-gray-200 focus:ring-orange-400 focus:border-orange-400 hover:border-orange-300'}`}
-            placeholder="เช่น สมชาย"
+            placeholder="เช่น ชาย"
           />
           {errors.nickname_th && (
             <motion.p
