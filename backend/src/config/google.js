@@ -56,7 +56,12 @@ async function appendToSheet(data) {
       "Proud Achievement": (data.proud_achievement ?? "").replace(/\n/g, " "),
       "Activity Hours": participationMap[data.participation_benefits] || "",
       "Instagram Handle": data.instagram_handle ?? "",
-      "Hints": (data.hints ?? "").toString()
+      Hints: Array.isArray(data.hints)
+        ? data.hints
+            .map((h) => h?.trim())
+            .filter(Boolean)
+            .join(" | ")
+        : data.hints ?? "",
     };
 
     console.log("Row data to add:", rowData);
