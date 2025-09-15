@@ -38,20 +38,12 @@ const createRegistration = async (req, res) => {
 
     const registrationErrors = validateRegistrationData(registrationData);
     if (registrationErrors.length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation errors',
-        errors: registrationErrors
-      });
+      return res.status(400).json({ success: false, message: 'Validation errors', errors: registrationErrors });
     }
 
     const hintErrors = validateHints(hints);
     if (hintErrors.length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Hint validation errors',
-        errors: hintErrors
-      });
+      return res.status(400).json({ success: false, message: 'Hint validation errors', errors: hintErrors });
     }
 
     const [result] = await connection.execute(`
@@ -84,7 +76,6 @@ const createRegistration = async (req, res) => {
     ]);
 
     const registrationId = result.insertId;
-    console.log('✅ Registration saved to database with ID:', registrationId);
 
     for (let i = 0; i < hints.length; i++) {
       await connection.execute(
@@ -94,50 +85,19 @@ const createRegistration = async (req, res) => {
     }
 
     await connection.commit();
-    console.log('✅ Transaction committed successfully');
 
-    const hintsText = Array.isArray(hints)
-      ? hints.map((hint, index) => `${index + 1}: ${hint.trim()}`).join('; ')
-      : '';
+    const hintsText = hints.filter(Boolean).map((h, i) => `${i+1}: ${h.trim()}`).join('; ');
 
-    const now = new Date().toISOString();
-    
     const sheetData = {
       ...registrationData,
       id: registrationId,
       hints: hintsText,
-      created_at: now,
-      updated_at: now,
-      can_attend: registrationData.can_attend !== false ? true : false,
-      mbti: registrationData.mbti || '',
-      food_allergies: registrationData.food_allergies || '',
-      medical_conditions: registrationData.medical_conditions || '',
-      instagram_handle: registrationData.instagram_handle || '',
-      academic_year: registrationData.academic_year || 2568,
-      participation_benefits: registrationData.participation_benefits
+      can_attend: registrationData.can_attend !== false,
+      academic_year: registrationData.academic_year || 2568
     };
 
-    console.log('📊 Sending to Google Sheets...', sheetData);
-
-    try {
-      const sheetResult = await appendToSheet(sheetData);
-      console.log('✅ Data successfully sent to Google Sheets:', sheetResult);
-
-      res.status(201).json({
-        success: true,
-        message: 'Registration created successfully and synced to Google Sheets',
-        data: { id: registrationId }
-      });
-    } catch (sheetError) {
-      console.error('❌ Failed to send data to Google Sheets:', sheetError.message);
-      res.status(201).json({
-        success: true,
-        message: 'Registration created successfully, but failed to sync with Google Sheets',
-        data: { id: registrationId },
-        warning: 'Google Sheets sync failed',
-        sheetError: sheetError.message
-      });
-    }
+    const sheetResult = await appendToSheet(sheetData);
+    res.status(201).json({ success: true, message: 'Registration created successfully', data: { id: registrationId, sheet: sheetResult } });
 
   } catch (error) {
     await connection.rollback();
@@ -148,7 +108,18 @@ const createRegistration = async (req, res) => {
   }
 };
 
+const testGoogleSheetsConnection = async (req, res) => {
+  try {
+    const { testConnection } = require('../config/google');
+    const result = await testConnection();
+    res.json({ success: result.success, data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Test connection failed', error: error.message });
+  }
+};
+
 module.exports = {
   getAllRegistrations,
-  createRegistration
+  createRegistration,
+  testGoogleSheetsConnection
 };

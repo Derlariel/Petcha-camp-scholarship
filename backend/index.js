@@ -40,20 +40,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// app.post('/api/registrations', async (req, res) => {
-//   try {
-//     const data = req.body.data; 
-//     if (!Array.isArray(data)) {
-//       return res.status(400).json({ success: false, message: 'Invalid data format, expected array' });
-//     }
 
-//     const result = await appendToSheet(data);
-//     res.json({ success: true, rowIndex: result.rowIndex });
-//   } catch (error) {
-//     console.error('POST /api/registrations error:', error);
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// });
 
 app.post('/api/registrations', async (req, res) => {
   try {
