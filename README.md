@@ -59,18 +59,6 @@ A full-stack web application for managing registration and activities of **Petch
   - Instagram (optional)
   - 10 Clues (for buddy guessing)
 
----
-
-## 🛠️ Server Requirements
-
-| Spec           | Value               |
-|----------------|---------------------|
-| OS             | Ubuntu 22.04  |
-| CPU            | 4 Cores             |
-| RAM            | 8 GB                |
-| Disk           | 100 GB              |
-| IP             | Real Internet IP (w/ Reverse Proxy) |
-| Domain         | `petchacamp.kmutt.ac.th` |
 
 
 
